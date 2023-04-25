@@ -1,63 +1,38 @@
--- 1. 
-SELECT authors.name as 'Автор', COUNT(authors.name) as count  FROM authors
-JOIN authors_books ON authors_books.authors_id = authors.id
-JOIN books ON authors_books.books_id = books.id
-GROUP BY authors.name
-ORDER BY count DESC
-LIMIT 1
-;
+-- 1.
+SELECT SUM(amount) FROM hardware;
 -- 2. 
-SELECT * FROM books
-WHERE year LIKE '%%'
-ORDER BY year ASC
-LIMIT 5
+SELECT * FROM hardware
+WHERE amount = 0
 ;
 -- 3. 
-SELECT COUNT(shelves.title) as 'Количество книг' FROM shelves
-JOIN books ON shelves.id = books.shelves_id
-WHERE shelves.title LIKE '%кабин%'
+SELECT ROUND(AVG(price)) FROM hardware
+WHERE title LIKE 'Монитор%'
 ;
 -- 4. 
-SELECT books.title as 'Название', authors.name as 'Автор', books.year as 'Год', shelves.title 'Полка' FROM shelves
-JOIN books ON shelves.id = books.shelves_id
-JOIN authors_books ON books.id = authors_books.books_id
-JOIN authors ON authors_books.authors_id = authors.id
-WHERE shelves.title LIKE '%спал%'
+SELECT * FROM hardware
+WHERE title LIKE 'Клавиатура%'
+ORDER BY price ASC
 ;
--- 5. 
-SELECT books.title as 'Книга', books.year 'Год', authors.name as 'Автор' FROM books
-JOIN authors_books ON books.id = authors_books.books_id
-JOIN authors ON authors_books.authors_id = authors.id
-WHERE authors.name = 'Лев Толстой'
+-- 5.
+SELECT tag, count(title) as amount FROM hardware 
+GROUP BY tag 
+ORDER BY amount DESC
 ;
 -- 6. 
-SELECT books.title as 'Книга', authors.name as 'Автор' FROM books
-JOIN authors_books ON books.id = authors_books.books_id
-JOIN authors ON authors_books.authors_id = authors.id
-WHERE authors.name LIKE 'А%'
+SELECT COUNT(title) FROM hardware
+WHERE tag = 'discount'
 ;
 -- 7. 
-SELECT books.title as 'Книга', authors.name as 'Автор', shelves.title as 'Полка' FROM books
-JOIN authors_books ON books.id = authors_books.books_id
-JOIN authors ON authors_books.authors_id = authors.id
-JOIN shelves ON books.shelves_id = shelves.id
-WHERE 
-	(shelves.title LIKE 'верхняя%') 
-    OR 
-    (shelves.title LIKE 'нижняя%')
+SELECT title, price FROM hardware
+WHERE tag = 'new'
+ORDER BY price DESC
+LIMIT 1
 ;
 -- 8. 
-UPDATE books
-SET books.friends_id = 1
-WHERE id = 9
+INSERT INTO `hardware` (`title`, `price`, `amount`, `tag`) 
+VALUES ('Ноутбук Lenovo 2BXKQ7E9XD', '54500', '1', 'new')
 ;
--- 9. 
-INSERT INTO books (books.title, books.year, books.shelves_id)
-VALUES ('Краткие ответы на большие вопросы', '2020', 1)
-;
-INSERT INTO authors (authors.name)
-VALUES ('Стивен Хокинг')
-;
-INSERT INTO authors_books (authors_books.books_id, authors_books.authors_id)
-VALUES (175, 144)
+-- 9.
+DELETE FROM hardware
+WHERE title = 'Очки PS VR 2' AND id > 0
 ;
